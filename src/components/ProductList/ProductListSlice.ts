@@ -74,7 +74,8 @@ const productListSlice = createSlice({
       state.products.push(action.payload);
     })
     builder.addCase(updateProductAsync.fulfilled,(state,action)=>{
-      state.products[action.payload.id]=action.payload;
+      const productIndex=state.products.findIndex((p:any)=>p.id=action.payload.id);
+      state.products[productIndex]=action.payload;
     })
   }
 })

@@ -9,7 +9,7 @@ const initialState:any= {
 };
 
 export const addToOrderAsync = createAsyncThunk(
-  'order/addToCart',
+  'order/addToOrder',
   async (item:any)=>{
     const response:any = await addOrder(item);
     return response.data;
@@ -33,7 +33,8 @@ export const fetchAllOrdersAsync = createAsyncThunk(
 export const updateOrderAsync = createAsyncThunk(
   'order/updateOrder',
   async (order:any)=>{
-    const response:any = await updateOrder(order);
+    await updateOrder(order);
+    const response:any = await fetchAllOrders();
     console.log(response.data);
     return response.data;
   }
@@ -48,18 +49,17 @@ const orderSlice = createSlice({
     }
   },
   extraReducers:(builder)=>{
-    builder.addCase(addToOrderAsync.pending,(state)=>{
-    })
     builder.addCase(addToOrderAsync.fulfilled,(state,action)=>{
       state.orders.push(action.payload);
       state.currentOrder = action.payload;
+      state.totalOrders +=1;
     })
     builder.addCase(fetchAllOrdersAsync.fulfilled,(state,action)=>{
       state.orders = action.payload;
       state.totalOrders = action.payload?.length || 0;
     })
     builder.addCase(updateOrderAsync.fulfilled,(state,action)=>{
-      state.orders[action.payload.index] = action.payload.order;
+      state.orders = action.payload;
     })
   }
 })

@@ -1,59 +1,60 @@
+import { withDbConnect } from "@/lib/withDBConnection";
+import Order from "@/models/Order";
 import { NextRequest, NextResponse } from "next/server";
 
 // In-memory orders (replace with a database in production)
 let orders: any[] = [];
 
 // GET: Fetch all orders
-export async function GET() {
-    return NextResponse.json(orders, { status: 200 });
-}
+export const GET = withDbConnect(async (req:NextRequest) => {
+    try{
+        const { searchParams } = new URL(req.url);
+        const userid = searchParams.get('userid');
 
-// GET: Fetch order by ID
-export async function getOrdersById(req: NextRequest) {
-    try {
-        const { id } = await req.json();
-        const order = orders.find((order) => order.id === id);
-        
-        if (!order) {
-            return NextResponse.json({ error: "Order not found" }, { status: 404 });
+        if (userid) {
+            const orders = await Order.find({user:userid});
+    
+            if (!orders) {
+                return NextResponse.json({ error: "No Order found" }, { status: 404 });
+            }
+    
+            return NextResponse.json(orders, { status: 200 });
+        }else{
+            const orders = await Order.find({});
+            return NextResponse.json(orders, { status: 200 });
         }
-
-        return NextResponse.json(order, { status: 200 });
-    } catch (error) {
-        return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+    }catch(error){
+        console.error("GET error:", error);
+        return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
     }
-}
+});
 
 // POST: Add a new order
-export async function POST(req: NextRequest) {
+export const POST = withDbConnect(async (req:NextRequest) => {
     try {
         const newOrder = await req.json();
-        const orderId = Date.now();
-        
-        const order = { id: orderId, status: "pending", ...newOrder };
-        orders.push(order);
+        const order = new Order({status:"pending", ...newOrder});
+        const doc = await order.save();
 
-        return NextResponse.json({ message: "Order placed successfully", order }, { status: 201 });
+        return NextResponse.json({ message: "Order placed successfully", order:doc }, { status: 201 });
     } catch (error) {
-        return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+        return NextResponse.json({ error: "Invalid request"+error }, { status: 400 });
     }
-}
+});
 
-export async function PATCH(req: NextRequest) {
+export const PATCH = withDbConnect(async (req:NextRequest) => {
     try {
         const { searchParams } = new URL(req.url);
-        const orderId = parseInt(searchParams.get("id") || "");
+        const orderId = searchParams.get("id");
         const updateOrder = await req.json();
 
         const orderIndex = orders.findIndex((order) => order.id === orderId);
-        if (orderIndex === -1) {
-            return NextResponse.json({ error: "Order not found" }, { status: 404 });
-        }
-        
-        orders[orderIndex].status = updateOrder.status; 
+        const order = await Order.findById(orderId);
+        order.status = updateOrder.status;
+        const doc = await order.save(); 
 
-        return NextResponse.json({ message: "Order placed successfully", order:orders[orderIndex],index:orderIndex }, { status: 201 });
+        return NextResponse.json({ message: "Order placed successfully", order:doc,index:orderIndex }, { status: 201 });
     } catch (error) {
         return NextResponse.json({ error: "Invalid request" }, { status: 400 });
     }
-}
+});

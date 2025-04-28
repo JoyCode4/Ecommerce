@@ -45,6 +45,11 @@ const ProductList: React.FC = () => {
                       <p className="text-sm font-medium block line-through text-gray-500">${product.price}</p>
                     </div>
                   </div>
+                  { product.stock<=0 &&
+                      (<div className='text-sm font-medium block text-red-400'>
+                        Out of stock
+                      </div>)
+                    }
                 </div>
               </Link>
             ))}

@@ -1,6 +1,4 @@
-import { ProductListStruct } from '../../models/ProductList';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
 import { fetchLoggedInUser, fetchLoggedInUserOrders, updateUser } from './UserAPI';
 
 const initialState:any = {
@@ -10,7 +8,7 @@ const initialState:any = {
 
 export const fetchLoggedInUserAsync = createAsyncThunk(
   'user/fetchLoggedInUser',
-  async (id:number)=>{
+  async (id:any)=>{
     const response:any = await fetchLoggedInUser(id);
     return response.data;
   }
@@ -36,7 +34,7 @@ const productSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    addProduct(state, action: PayloadAction<ProductListStruct>) {
+    addProduct(state, action) {
       state.push(action.payload);
     },
   },

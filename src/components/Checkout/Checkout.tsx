@@ -76,7 +76,7 @@ const Checkout: React.FC<Props> = ({ }) => {
                 toast.error("Please select an address")
             }
         }else{
-            const order = {items,totalAmount,totalItems, user, paymentMethod,selectedAddress : add,status:'pending'};
+            const order = {items,totalAmount,totalItems, user:user.id, paymentMethod,selectedAddress : add};
             dispatch(addToOrderAsync(order));
             toast.success("Order Placed");
         }

@@ -10,16 +10,16 @@ export function addToCart(item:any){
             body:JSON.stringify(item)
         })
         const data = await response.json()
+        console.log(data);
         resolve({data:data.cart})
     })
 }
 
 export function fetchCartItemsByUserId(id:any){
     return new Promise(async (resolve)=>{
-        const response = await fetch(`${API_URL}/api/cart`);
-        const data = await response.json()
-        const result = data.filter((d:any)=>d.user == id);
-        resolve({data:result})
+        const response = await fetch(`${API_URL}/api/cart?userid=${id}`);
+        const data = await response.json();
+        resolve({data})
     })
 }
 
@@ -37,27 +37,27 @@ export function updateCart(item:any){
         resolve({data:data.cart})
     })
 }
-export function deleteCart(id:number){
+export function deleteCart(id:any,userId:any){
     return new Promise(async (resolve)=>{
         const response = await fetch(`${API_URL}/api/cart`,{
             method:"DELETE",
             headers:{
                 "Content-Type":"application/json"
             },
-            body:JSON.stringify({id})
+            body:JSON.stringify({id:id,user:userId})
         })
         const data = await response.json()
-        console.log(data.cart);
         resolve({data:data.cart})
     })
 }
 
-export function resetCart(userId:number){
+export function resetCart(userId:any){
     return new Promise(async (resolve)=>{
         const response:any = await fetchCartItemsByUserId(userId);
         const items = response.data;
+        console.log(items);
         for(let i of items){
-            await deleteCart(i.id);
+            await deleteCart(i.product.id,userId);
         }
 
         resolve({status:"success",data:[]})

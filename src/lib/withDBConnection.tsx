@@ -1,8 +1,8 @@
 import dbConnect from './mongodb';
 
-export function withDbConnect(handler: (request: Request) => Promise<Response>) {
-  return async function (request: Request) {
+export function withDbConnect(handler: any) {
+  return async function (...args:any[]) {
     await dbConnect(); // always connect first
-    return handler(request); // then run the actual logic
+    return handler(...args); // then run the actual logic
   };
 }

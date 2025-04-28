@@ -1,3 +1,5 @@
+import { withDbConnect } from "@/lib/withDBConnection";
+import User from "@/models/User";
 import { NextRequest, NextResponse } from "next/server";
 
 // In-memory users list (Replace with DB in production)
@@ -244,12 +246,34 @@ let users: any[] = [
 ];
 
 // GET: Fetch all users
-export async function GET() {
-  return NextResponse.json(users, { status: 200 });
-}
+// export async function GET() {
+//   return NextResponse.json(users, { status: 200 });
+// }
+export const GET = withDbConnect(async (req:NextRequest) => {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
+
+    if (id) {
+      const user = await User.findById(id);
+
+      if (!user) {
+        return NextResponse.json({ error: "User not found" }, { status: 404 });
+      }
+
+      return NextResponse.json(user, { status: 200 });
+    } else {
+      const users = await User.find({});
+      return NextResponse.json(users, { status: 200 });
+    }
+  } catch (error) {
+    console.error("GET error:", error);
+    return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
+  }
+});
 
 // POST: Add a new user
-export async function POST(req: NextRequest) {
+export const POST = withDbConnect(async (req:NextRequest) => {
   try {
     const { email, password } = await req.json();
 
@@ -259,32 +283,29 @@ export async function POST(req: NextRequest) {
     }
 
     const newUser = {
-      id: Date.now(),
       email,
       password,
     };
 
-    users.push(newUser);
-    return NextResponse.json({ message: "User added", user: newUser }, { status: 201 });
+    const user = new User(newUser);
+    const doc = await user.save();
+    return NextResponse.json({ message: "User added", user: doc }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }
-}
+});
 
 // PATCH: Add an address to a user's addresses array
 export async function PATCH(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
-    const userId = parseInt(searchParams.get("id") || "");
+    const userId = searchParams.get("id");
     const { userInfo } = await req.json();
 
-    let userIndex = users.findIndex((u) => u.id === userId);
-    if (userIndex==-1) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
-    }
-    users[userIndex]=userInfo;
+    const user = await User.findByIdAndUpdate(userId,userInfo,{new:true});
     
-    return NextResponse.json({ message: "User Updated with Addresses", user:users[userIndex] }, { status: 200 });
+    
+    return NextResponse.json({ message: "User Updated with Addresses", user:user }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ error: "Invalid request" }, { status: 400 });
   }

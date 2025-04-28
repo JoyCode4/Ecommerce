@@ -551,7 +551,7 @@ const ProductForm: React.FC<Props> = ({ }) => {
 
       const handleDelete = () =>{
         const product = {...selectedProduct};
-        product.id = Number(params.id);
+        product.id = params.id;
         product.deleted = true;
         console.log(product);
         dispatch(updateProductAsync(product));
@@ -579,13 +579,12 @@ const ProductForm: React.FC<Props> = ({ }) => {
                 console.log(product);
 
                 if (params.id) {
-                  product.id = Number(params.id);
+                  product.id = params.id;
                   product.rating = selectedProduct.rating || 0;
                   dispatch(updateProductAsync(product));
                   reset();
                   toast.success("Product Updated")
                 } else {
-                    product.id=Date.now();
                   dispatch(createProductAsync(product));
                   reset();
                   toast.success("Product Added")

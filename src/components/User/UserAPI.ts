@@ -1,21 +1,19 @@
-export function fetchLoggedInUser(id:number){
+export function fetchLoggedInUser(id:any){
     return new Promise(async (resolve)=>{
-        const response = await fetch("api/users/")
-        const res = await response.json()
-        const data = res.find((user:any)=>user.id===id);
+        const response = await fetch("api/users?id="+id)
+        const data = await response.json()
         resolve({data})
     })
 }
 export function fetchLoggedInUserOrders(id:number){
     return new Promise(async (resolve)=>{
-        const response = await fetch("api/orders")
+        const response = await fetch(`api/orders?userid=${id}`)
         const orders = await response.json()
-        const data = (orders && orders.length>0)?orders.filter((order:any)=>order.user.id===id):[];
-        resolve({data})
+        resolve({data:orders})
     })
 }
 
-export function updateUser(userId:number, updatedUser:any) {
+export function updateUser(userId:any, updatedUser:any) {
     return new Promise(async (resolve, reject) => {
         try {
             const response = await fetch(`/api/users?id=${userId}`, {

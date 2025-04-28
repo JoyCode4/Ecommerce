@@ -55,7 +55,8 @@ const ProductDetail: React.FC<Props> = ({ }) => {
 
   const handleCart=(e:any)=>{
     e.preventDefault();
-    dispatch(addToCartAsync({...product,user:user.id,price:discountPrice(product)}));
+    const newItem = {product:{...product,price:discountPrice(product)},user:user.id};
+    dispatch(addToCartAsync(newItem));
     toast.success("Cart Item Added");
   }
 

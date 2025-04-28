@@ -37,18 +37,6 @@ const UserOrders: React.FC<Props> = ({ }) => {
     dispatch(fetchLoggedInUserOrdersAsync(user.id))
   }, [])
 
-  orders = orders.map((element: any) => {
-    let totalAmount = 0;
-    let totalItems = 0;
-
-    for (let item of element.items) {
-      totalAmount += (item.price * item.quantity);
-      totalItems += (item.quantity);
-    }
-
-    return { ...element, totalAmount, totalItems }
-  });
-
   return (
     <div>
       {orders && orders.map((order: any) => (
@@ -60,19 +48,19 @@ const UserOrders: React.FC<Props> = ({ }) => {
                 {order.items && order.items.map((item: any, index: number) => (
                   <li key={index} className="flex py-6">
                     <div className="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
-                      <img alt={item.title} src={item.thumbnail} className="size-full object-cover" />
+                      <img alt={item.product.title} src={item.product.thumbnail} className="size-full object-cover" />
                     </div>
 
                     <div className="ml-4 flex flex-1 flex-col">
                       <div>
                         <div className="flex justify-between text-base font-medium text-gray-900">
                           <h3>
-                            <Link href={`/products/${item.id}`}>{item.title}</Link>
+                            <Link href={`/products/${item.product.id}`}>{item.product.title}</Link>
                           </h3>
-                          <p className="ml-4">{item.price}</p>
+                          <p className="ml-4">{item.product.price}</p>
                         </div>
                         {/* <p className="mt-1 text-sm text-gray-500">{item.color}</p> */}
-                        <p className="mt-1 text-sm text-gray-500">{item.brand}</p>
+                        <p className="mt-1 text-sm text-gray-500">{item.product.brand}</p>
                       </div>
                       <div className="flex flex-1 items-end justify-between text-sm">
                         <p className="text-gray-500">Qty : <span>{item.quantity}</span></p>

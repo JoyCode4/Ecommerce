@@ -89,10 +89,10 @@ const AdminOrders: React.FC<Props> = ({ }) => {
                                                             <div className="mr-1">
                                                                 <img
                                                                     className="w-6 h-6 rounded-full"
-                                                                    src={item.thumbnail}
+                                                                    src={item.product.thumbnail}
                                                                 />
                                                             </div>
-                                                            <span>{`${item.title} (${item.quantity}) - $${item.price}`}</span>
+                                                            <span>{`${item.product.title} (${item.quantity}) - $${item.product.price}`}</span>
                                                         </div>
                                                     ))}
                                                 </td>

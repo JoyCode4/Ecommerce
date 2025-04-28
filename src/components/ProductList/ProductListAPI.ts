@@ -2,7 +2,7 @@ import { API_URL } from "@/models/contants"
 export function fetchAllProductsAdmin(){
     return new Promise(async (resolve)=>{
         // const response = await fetch("api/productlist")
-        const response = await fetch(`${API_URL}/api/productlist`)
+        const response = await fetch(`${API_URL}/api/productlist?role=admin`)
         const data = await response.json()
         // console.log(data);
         resolve({data})
@@ -12,9 +12,8 @@ export function fetchAllProductsAdmin(){
 export function fetchAllProducts(){
     return new Promise(async (resolve)=>{
         // const response = await fetch("api/productlist")
-        const response = await fetch(`${API_URL}/api/productlist`)
+        const response = await fetch(`${API_URL}/api/productlist?role=user`)
         let data = await response.json()
-        data = data.filter((product:any)=>!product.deleted);
         resolve({data})
     })
 }
@@ -22,10 +21,9 @@ export function fetchAllProducts(){
 export function fetchProductById(id:string){
     return new Promise(async (resolve)=>{
         // const response = await fetch("api/productlist")
-        const response = await fetch(`${API_URL}/api/productlist`)
+        const response = await fetch(`${API_URL}/api/productlist?id=${id}`)
         const data = await response.json()
-        const product = data.find((p:any)=>p.id==id)
-        resolve({data:product})
+        resolve({data})
     })
 }
 

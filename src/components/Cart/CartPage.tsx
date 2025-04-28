@@ -5,8 +5,8 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteCartAsync, selectCart, selectCartTotalAmount, selectCartTotalItems, updateCartAsync} from './CartSlice';
 import { AppDispatch } from '@/lib/store';
-import { discountPrice } from '@/models/contants';
 import { toast } from 'react-toastify';
+import { selectLoggedInUser } from '../Auth/AuthSlice';
 
 interface Props{
   buttonName?:string;
@@ -26,6 +26,7 @@ const CartPage: React.FC<Props> = ({buttonName="Checkout",hrefName="/checkout",h
     const dispatch:AppDispatch=useDispatch();
     const totalAmount = useSelector(selectCartTotalAmount);
     const totalItems = useSelector(selectCartTotalItems);
+    const user = useSelector(selectLoggedInUser);
     // let amount = 0;
     // let itemsx=0;
     
@@ -44,9 +45,11 @@ const CartPage: React.FC<Props> = ({buttonName="Checkout",hrefName="/checkout",h
         toast.success("Quantity Updated");
     }
     
-    const deleteItem = (e:any,id:number)=>{
+    const deleteItem = (e:any,id:any)=>{
         e.preventDefault();
-        dispatch(deleteCartAsync(id));
+        console.log(id);
+        const details:any = {user:user.id,id:id}; 
+        dispatch(deleteCartAsync(details));
         toast.success("Cart Item Deleted");
     }
 
@@ -59,19 +62,19 @@ const CartPage: React.FC<Props> = ({buttonName="Checkout",hrefName="/checkout",h
                 {items.map((item:any,index:number) => (
                     <li key={index} className="flex py-6">
                     <div className="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
-                        <img alt={item.title} src={item.thumbnail} className="size-full object-cover" />
+                        <img alt={item.product.title} src={item.product.thumbnail} className="size-full object-cover" />
                     </div>
 
                     <div className="ml-4 flex flex-1 flex-col">
                         <div>
                         <div className="flex justify-between text-base font-medium text-gray-900">
                             <h3>
-                            <Link href={`/products/${item.id}`}>{item.title}</Link>
+                            <Link href={`/products/${item.product.id}`}>{item.product.title}</Link>
                             </h3>
-                            <p className="ml-4">{item.price}</p>
+                            <p className="ml-4">{item.product.price}</p>
                         </div>
                         {/* <p className="mt-1 text-sm text-gray-500">{item.color}</p> */}
-                        <p className="mt-1 text-sm text-gray-500">{item.brand}</p>
+                        <p className="mt-1 text-sm text-gray-500">{item.product.brand}</p>
                         </div>
                         <div className="flex flex-1 items-end justify-between text-sm">
                         <p className="text-gray-500">Qty 
@@ -86,7 +89,7 @@ const CartPage: React.FC<Props> = ({buttonName="Checkout",hrefName="/checkout",h
                             
 
                         <div className="flex">
-                            <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500" onClick={(e)=>deleteItem(e,item.id)}>
+                            <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500" onClick={(e)=>deleteItem(e,item.product.id)}>
                             Remove
                             </button>
                         </div>
