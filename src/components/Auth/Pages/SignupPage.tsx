@@ -1,9 +1,6 @@
-import { AppDispatch } from "@/lib/store";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { createUserAsync, selectLoggedInUser } from "../AuthSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
@@ -19,19 +16,14 @@ interface  IFormInput {
 }
 const SignupPage: React.FC<AuthProps> = ({}) =>{
   const { register, handleSubmit, formState: { errors } } = useForm<IFormInput>();
-  const dispatch:AppDispatch=useDispatch();
-  const user = useSelector(selectLoggedInUser);
   const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   useEffect(()=>{
-    if(user){
-      if(user.role === 'user'){
-        router.push("/");
-      }else if(user.role === 'admin'){
-        router.push("/admin");
-      }
-      toast.success("Login as "+user.role);
+    if(error){
+      toast.error(error);
     }
-  },[user])
+  },[error])
 
     return (
       <>
@@ -48,8 +40,28 @@ const SignupPage: React.FC<AuthProps> = ({}) =>{
           </div>
   
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6" onSubmit={handleSubmit((data)=>{ 
-              dispatch(createUserAsync({email:data.email,password:data.password,addresses:[]}));
+            <form className="space-y-6" onSubmit={handleSubmit(async (data:any)=>{ 
+              setLoading(true);
+              setError(null);
+              try {
+                const res = await fetch('/api/auth/signup', {
+                  method: 'POST',
+                  body: JSON.stringify(data),
+                });
+          
+                const result = await res.json();
+          
+                if (res.ok) {
+                  router.push('/login'); // ✅ After signup, redirect to login page
+                  toast.success("User Added...!");
+                } else {
+                  setError(result.error || "Signup failed");
+                }
+              } catch (err) {
+                setError("Network error");
+              } finally {
+                setLoading(false);
+              }
             })}>
               <div>
                 <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
@@ -106,8 +118,9 @@ const SignupPage: React.FC<AuthProps> = ({}) =>{
                 <button
                   type="submit"
                   className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  disabled={loading}
                 >
-                  Sign Up
+                  {loading ? "Signing up..." : "Signup"}
                 </button>
               </div>
             </form>

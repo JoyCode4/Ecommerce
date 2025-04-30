@@ -1,66 +1,51 @@
-import { User } from '../../models/Auth';
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
+// import { User } from '../../models/Auth';
+import { createAsyncThunk, createSlice,PayloadAction } from '@reduxjs/toolkit'
 import { checkUser, createUser, signOut } from './AuthAPI';
 import { updateUser } from '../User/UserAPI';
 
-const initialState:any = {
-  loggedInUser:null,
-  errors:null,
+interface User {
+  id: string;
+  email: string;
+  role: string;
+}
+
+interface AuthState {
+  user: any | null;
+  loading: boolean;
+  error: string | null;
+}
+
+const initialState: AuthState = {
+  user: null,
+  loading: false,
+  error: null,
 };
-
-export const createUserAsync = createAsyncThunk(
-  'auth/createUser',
-  async (userData:any)=>{
-    const response:any = await createUser(userData);
-    return response.data;
-  }
-)
-
-export const checkUserAsync = createAsyncThunk(
-  'auth/checkUser',
-  async (loginInfo:any)=>{
-    const response:any = await checkUser(loginInfo);
-    return response.data;
-  }
-)
-
-export const signOutAsync = createAsyncThunk(
-  'auth/signOut',
-  async (userId:number)=>{
-    const response:any = await signOut(userId);
-    return response.data;
-  }
-)
 
 const AuthSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    addUser(state, action: PayloadAction<User>) {
-      state.push(action.payload);
+    loginStart(state) {
+      state.loading = true;
+    },
+    loginSuccess(state, action: PayloadAction<User>) {
+      state.loading = false;
+      state.user = action.payload;
+    },
+    loginFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    logout(state) {
+      state.user = null;
+      state.loading = false;
+      state.error = null;
     },
   },
-  extraReducers:(builder)=>{
-    builder.addCase(createUserAsync.fulfilled,(state,action)=>{
-      state.loggedInUser = action.payload;
-    })
-    builder.addCase(checkUserAsync.rejected,(state,action)=>{
-      state.errors = action.error;
-    })
-    builder.addCase(checkUserAsync.fulfilled,(state,action)=>{
-      state.errors = null;
-      state.loggedInUser = action.payload;
-    })
-    builder.addCase(signOutAsync.fulfilled,(state,action)=>{
-      state.errors = null;
-      state.loggedInUser = null;
-    })
-  }
-})
+});
 
-export const { addUser } = AuthSlice.actions
-
-export const selectLoggedInUser = (state:any)=>state.auth.loggedInUser;
-export const selectErrors = (state:any)=>state.auth.errors;
+export const { loginStart, loginSuccess, loginFailure, logout } = AuthSlice.actions;
+export const selectLoggedInUser = (state:any)=>state.auth.user;
+export const selectErrors = (state:any)=>state.auth.error;
+export const selectLoading = (state:any)=>state.auth.loading;
 export default AuthSlice.reducer

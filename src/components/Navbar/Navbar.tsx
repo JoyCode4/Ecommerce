@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '@/lib/store'
 import { usePathname } from 'next/navigation'
 import { fetchCartItemsByUserIdAsync, selectCart } from '../Cart/CartSlice'
-import { selectLoggedInUser, signOutAsync } from '../Auth/AuthSlice'
+import { selectLoggedInUser,logout as logoutAction } from '../Auth/AuthSlice'
 import { fetchLoggedInUserAsync } from '../User/UserSlice'
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-toastify'
@@ -43,12 +43,23 @@ const Navbar: React.FC<Props> = ({ children }) => {
   const items = useSelector(selectCart);
   const pathname = usePathname();
   const title = useSelector((state: RootState) => state.title.pageTitle);
-  const dispatch: AppDispatch = useDispatch();
+  const dispatch:AppDispatch = useDispatch();
   const user: any = useSelector(selectLoggedInUser);
   const router = useRouter();
-  const logout = () => {
-    dispatch(signOutAsync(user.id));
-    toast.success("Logout Successfully");
+  const logout = async () => {
+    try {
+      await fetch('/api/auth/logout', {
+        method: 'POST',
+      });
+
+      dispatch(logoutAction());
+
+      toast.success("Logout Successfully");
+      router.push('/login');
+    } catch (error) {
+      toast.error("Logout Failed");
+      console.error("Logout failed:", error);
+    }
   }
 
   useEffect(() => {

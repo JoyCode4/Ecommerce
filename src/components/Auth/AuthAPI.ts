@@ -10,7 +10,7 @@ export function fetchUsers(){
 
 export function createUser(userData:any){
     return new Promise(async (resolve)=>{
-        const response = await fetch(`${API_URL}/api/users`,{
+        const response = await fetch(`${API_URL}/api/auth/signup`,{
             method:"POST",
             headers:{
                 "Content-Type":"application/json"
@@ -19,7 +19,7 @@ export function createUser(userData:any){
         })
         const data = await response.json()
         console.log(data);
-        resolve({data})
+        resolve({data:data})
     })
 }
 

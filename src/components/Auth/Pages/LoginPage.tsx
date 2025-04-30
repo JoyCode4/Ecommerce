@@ -2,7 +2,7 @@
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { checkUserAsync, selectErrors, selectLoggedInUser } from "../AuthSlice";
+import { loginFailure, loginStart, loginSuccess, selectErrors, selectLoggedInUser } from "../AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 import { useRouter } from "next/navigation";
@@ -39,7 +39,7 @@ interface  IFormInput {
 
     useEffect(()=>{
       if(loginErrors){
-        toast.error("Unable to loggin");
+        toast.error("Unable to login");
       }
     },[loginErrors])
 
@@ -58,8 +58,26 @@ interface  IFormInput {
           </div>
   
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6" onSubmit={handleSubmit((data)=>{
-              dispatch(checkUserAsync({email:data.email,password:data.password}));
+            <form className="space-y-6" onSubmit={handleSubmit(async (data)=>{
+              dispatch(loginStart());
+              try {
+                const res = await fetch('/api/auth/login', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({ email:data.email,password:data.password}),
+                });
+                const result = await res.json();
+                if (res.ok) {
+                  dispatch(loginSuccess(result.user));
+                  router.push('/profile');
+                } else {
+                  dispatch(loginFailure(result.error));
+                }
+              } catch (err) {
+                dispatch(loginFailure('Network error'));
+              }
             })}>
               <div>
                 <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
