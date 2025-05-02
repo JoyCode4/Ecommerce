@@ -10,11 +10,11 @@ export default function Login() {
     // const [totalItems, setTotalItems] = useState(0);
     // const [totalAmount, setTotalAmount] = useState(0);
     return (
-      <Protected>
+      // <Protected>
         <div className="">
           {/* <CartPage totalAmount={totalAmount} totalItems={totalItems} setTotalItems={setTotalItems} setTotalAmount={setTotalAmount}/> */}
           <CartPage/>
         </div>
-      </Protected>
+      // </Protected>
     );
   }

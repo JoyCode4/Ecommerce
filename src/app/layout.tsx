@@ -54,7 +54,7 @@ export default function RootLayout({
           transition={Bounce}
           />
           {!shouldHideNavbar && <Navbar>
-          {children}
+          {children}          
           </Navbar>}
           {shouldHideNavbar && children}
         </Providers>

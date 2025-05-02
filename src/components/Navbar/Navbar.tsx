@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '@/lib/store'
 import { usePathname } from 'next/navigation'
 import { fetchCartItemsByUserIdAsync, selectCart } from '../Cart/CartSlice'
-import { selectLoggedInUser, signOutAsync } from '../Auth/AuthSlice'
+import { selectLoggedInUser, setUser } from '../Auth/AuthSlice'
 import { fetchLoggedInUserAsync } from '../User/UserSlice'
 import { useRouter } from 'next/navigation'
 import { toast } from 'react-toastify'
@@ -46,15 +46,14 @@ const Navbar: React.FC<Props> = ({ children }) => {
   const dispatch: AppDispatch = useDispatch();
   const user: any = useSelector(selectLoggedInUser);
   const router = useRouter();
-  const logout = () => {
-    dispatch(signOutAsync(user.id));
+  const logout = async () => {
+    await fetch("/api/auth/logout");
+    dispatch(setUser(null)); // Clear Redux
     toast.success("Logout Successfully");
+    router.push("/login");
   }
 
   useEffect(() => {
-    if (!user) {
-      router.push("/login");
-    }
     if (user) {
       dispatch(fetchCartItemsByUserIdAsync(user.id))
       dispatch(fetchLoggedInUserAsync(user.id));

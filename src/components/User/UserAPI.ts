@@ -1,11 +1,11 @@
 export function fetchLoggedInUser(id:any){
     return new Promise(async (resolve)=>{
-        const response = await fetch("api/users?id="+id)
+        const response = await fetch(`/api/users?id=${id}`)
         const data = await response.json()
         resolve({data})
     })
 }
-export function fetchLoggedInUserOrders(id:number){
+export function fetchLoggedInUserOrders(id:any){
     return new Promise(async (resolve)=>{
         const response = await fetch(`api/orders?userid=${id}`)
         const orders = await response.json()

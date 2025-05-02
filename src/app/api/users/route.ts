@@ -255,8 +255,8 @@ export const GET = withDbConnect(async (req:NextRequest) => {
     const id = searchParams.get('id');
 
     if (id) {
-      const user = await User.findById(id);
 
+      const user = await User.findById(id);
       if (!user) {
         return NextResponse.json({ error: "User not found" }, { status: 404 });
       }

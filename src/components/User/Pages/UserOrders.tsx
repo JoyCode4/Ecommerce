@@ -3,8 +3,10 @@
 import { AppDispatch } from "@/lib/store";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchLoggedInUserOrdersAsync, selectUserInfo, selectUserOrders } from "../UserSlice";
+import { fetchLoggedInUserAsync, fetchLoggedInUserOrdersAsync, selectUserInfo, selectUserOrders } from "../UserSlice";
 import Link from "next/link";
+import { selectLoggedInUser } from "@/components/Auth/AuthSlice";
+import { CubeIcon } from "@heroicons/react/24/outline";
 
 interface Props {
 
@@ -15,9 +17,9 @@ function classNames(...classes: any) {
 }
 const UserOrders: React.FC<Props> = ({ }) => {
   const dispatch: AppDispatch = useDispatch();
+  const loggedInUser= useSelector(selectLoggedInUser);
   const user = useSelector(selectUserInfo);
   let orders = useSelector(selectUserOrders);
-  let ordersEdit = [];
 
   const chooseColor = (status: string) => {
     switch(status){
@@ -34,13 +36,33 @@ const UserOrders: React.FC<Props> = ({ }) => {
   } 
 
   useEffect(() => {
-    dispatch(fetchLoggedInUserOrdersAsync(user.id))
+    dispatch(fetchLoggedInUserAsync(loggedInUser.id));
+    dispatch(fetchLoggedInUserOrdersAsync(loggedInUser.id));
   }, [])
 
   return (
+    <>
+    {
+      (!orders || orders?.length==0)?
+      (<div className="flex flex-col items-center justify-center h-[70vh] text-gray-600">
+      <div className="animate-pulse bg-gray-100 p-6 rounded-full mb-4">
+        <CubeIcon className="w-14 h-14 text-gray-400" />
+      </div>
+      <h2 className="text-2xl font-semibold">No Orders Yet</h2>
+      <p className="text-sm text-gray-500 mt-2 text-center max-w-xs">
+        You haven’t placed any orders yet. Once you make a purchase, your orders will appear here.
+      </p>
+      <a
+        href="/"
+        className="mt-6 inline-block rounded bg-indigo-600 px-5 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+      >
+        Start Shopping
+      </a>
+    </div>):
+    (
     <div>
-      {orders && orders.map((order: any) => (
-        <div key={order.id} className="border rounded-lg shadow-lg border-gray-300 my-10">
+      {orders && orders.map((order: any,index:number) => (
+        <div key={index} className="border rounded-lg shadow-lg border-gray-300 my-10">
           <h1 className="text-xl pl-10 pt-10 font-bold tracking-tight text-gray-900">Order No : {order.id} &nbsp; Status : &nbsp;<span className={chooseColor(order.status)}> {order.status.charAt(0).toUpperCase() + order.status.slice(1)}</span> </h1>
           <div className="my-8 p-10 ">
             <div className="flow-root">
@@ -111,6 +133,9 @@ const UserOrders: React.FC<Props> = ({ }) => {
 
       ))}
     </div>
+    )
+  }
+  </>
   )
 }
 

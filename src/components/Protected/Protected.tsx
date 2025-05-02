@@ -1,33 +1,64 @@
-import { ReactNode, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { selectLoggedInUser } from "../Auth/AuthSlice";
+import { ReactNode, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { selectLoggedInUser, setUser } from "../Auth/AuthSlice";
 import { usePathname, useRouter } from "next/navigation";
+import { AppDispatch } from "@/lib/store";
 
-interface Props{
-    children?:ReactNode,
-    redirectPath?:string,
+interface Props {
+  children?: ReactNode;
+  redirectPath?: string;
 }
 
-const Protected: React.FC<Props> = ({children,redirectPath = "/"}) =>{
-    const user = useSelector(selectLoggedInUser);
-    const router = useRouter();
-    const pathname = usePathname();
+const Protected: React.FC<Props> = ({ children, redirectPath = "/" }) => {
+  const user = useSelector(selectLoggedInUser);
+  const router = useRouter();
+  const pathname = usePathname();
+  const dispatch: AppDispatch = useDispatch();
 
-    useEffect(() => {
-        // If user exists and they access a protected page (e.g., "/login"), redirect to the dashboard or previous page
-        if (user && user.role!=="admin" && (pathname === "/login" || pathname === "/signup" || pathname === "/forgotpassword")) {
-            router.push(redirectPath);
+  const [loading, setLoading] = useState(true); // Show spinner until fetch completes
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const res = await fetch("/api/auth/me");
+        if (res.ok) {
+          const data = await res.json();
+          dispatch(setUser(data));
+        } else {
+          dispatch(setUser(null));
         }
-        // If no user and the page is protected, redirect to the login page
-        if (!user && pathname !== "/login") {
-            router.push("/login");
-        }
-    }, [user, router, pathname, redirectPath]);
+      } catch (error) {
+        console.error("Failed to fetch user:", error);
+        dispatch(setUser(null));
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    // Show content only if the user exists
-    if (!user) return null;
+    fetchUser();
+  }, [dispatch]);
 
-    return <>{children}</>;
-}
+  useEffect(() => {
+    if (loading) return; // Wait for user fetch to complete
+
+    if (user && user.role !== "admin" && ["/login", "/signup", "/forgotpassword"].includes(pathname)) {
+      router.push(redirectPath);
+    } else if (!user && pathname !== "/login") {
+      router.push("/login");
+    }
+  }, [user, pathname, redirectPath, router, loading]);
+
+  if (loading) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500" />
+      </div>
+    );
+  }
+
+  if (!user) return null;
+
+  return <>{children}</>;
+};
 
 export default Protected;

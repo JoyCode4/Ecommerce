@@ -2,7 +2,7 @@
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { checkUserAsync, selectErrors, selectLoggedInUser } from "../AuthSlice";
+import { selectLoggedInUser, setUser } from "../AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/lib/store";
 import { useRouter } from "next/navigation";
@@ -19,7 +19,6 @@ interface  IFormInput {
   const LoginPage: React.FC<AuthProps> = ({}) =>{
     const { register, handleSubmit, formState: { errors } } = useForm<IFormInput>();
     const user = useSelector(selectLoggedInUser)
-    const loginErrors = useSelector(selectErrors)
     const dispatch:AppDispatch = useDispatch();
     const router = useRouter();
 
@@ -30,18 +29,8 @@ interface  IFormInput {
         }else if(user.role === 'admin'){
           router.push("/admin");
         }
-        toast.success("Login as "+user.role);
-      }
-      else{
-        // toast.error("User not logged In");
       }
     },[user])
-
-    useEffect(()=>{
-      if(loginErrors){
-        toast.error("Unable to loggin");
-      }
-    },[loginErrors])
 
     return (
       <>
@@ -58,8 +47,34 @@ interface  IFormInput {
           </div>
   
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6" onSubmit={handleSubmit((data)=>{
-              dispatch(checkUserAsync({email:data.email,password:data.password}));
+            <form className="space-y-6" onSubmit={handleSubmit(async (data)=>{
+
+              const res = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({email:data.email,password:data.password}),
+              });
+          
+              const result = await res.json();
+          
+              if (!res.ok) {
+                toast.error(result.message);
+                return;
+              }
+          
+              // Fetch user info using /me.ts
+              const meRes = await fetch('/api/auth/me');
+          
+              const user = await meRes.json();
+              dispatch(setUser(user));
+              toast.success(`Login as ${user.role}`)
+          
+              // Redirect based on role
+              if (user.role === 'admin') {
+                router.push('/admin');
+              } else {
+                router.push('/');
+              }
             })}>
               <div>
                 <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
@@ -101,7 +116,7 @@ interface  IFormInput {
                     className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                   />
                    {errors.password && <p className="text-red-500">{String(errors.password.message)}</p>}
-                   {loginErrors && <p className="text-red-500">{String(loginErrors.message)}</p>}
+                   {/* {loginErrors && <p className="text-red-500">{String(loginErrors.message)}</p>} */}
                 </div>
               </div>
   

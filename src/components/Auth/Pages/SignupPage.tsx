@@ -2,7 +2,7 @@ import { AppDispatch } from "@/lib/store";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { createUserAsync, selectLoggedInUser } from "../AuthSlice";
+import { selectLoggedInUser } from "../AuthSlice";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
@@ -22,16 +22,6 @@ const SignupPage: React.FC<AuthProps> = ({}) =>{
   const dispatch:AppDispatch=useDispatch();
   const user = useSelector(selectLoggedInUser);
   const router = useRouter();
-  useEffect(()=>{
-    if(user){
-      if(user.role === 'user'){
-        router.push("/");
-      }else if(user.role === 'admin'){
-        router.push("/admin");
-      }
-      toast.success("Login as "+user.role);
-    }
-  },[user])
 
     return (
       <>
@@ -48,8 +38,19 @@ const SignupPage: React.FC<AuthProps> = ({}) =>{
           </div>
   
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6" onSubmit={handleSubmit((data)=>{ 
-              dispatch(createUserAsync({email:data.email,password:data.password,addresses:[]}));
+            <form className="space-y-6" onSubmit={handleSubmit(async (data)=>{ 
+              const res = await fetch('/api/auth/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({email:data.email,password:data.password,addresses:[]}),
+              });
+          
+              if (res.ok) {
+                router.push('/login'); // Redirect to login after successful signup
+              } else {
+                const data = await res.json();
+                toast.error(data.message || 'Signup failed');
+              }
             })}>
               <div>
                 <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
