@@ -1,3 +1,4 @@
+"use client"
 import { ReactNode, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { selectLoggedInUser, setUser } from "../Auth/AuthSlice";

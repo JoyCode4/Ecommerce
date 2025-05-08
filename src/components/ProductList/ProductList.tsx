@@ -1,3 +1,4 @@
+"use client"
 import Pagination from "../Pagination/Pagination";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { useDispatch, useSelector } from "react-redux";

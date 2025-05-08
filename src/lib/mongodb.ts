@@ -1,8 +1,6 @@
 import mongoose from 'mongoose';
 
-// const MONGODB_URI = process.env.MONGODB_URI as string;
-// const MONGODB_URI = "mongodb+srv://joy:joy00004@cluster0.4tswcny.mongodb.net/ECommerce?retryWrites=true&w=majority&appName=Cluster0";
-const MONGODB_URI = "mongodb://localhost:27017/ecommerce";
+const MONGODB_URI = process.env.NEXT_PUBLIC_MONGODBURL;
 
 const dbConnect = async () => {
   if (mongoose.connection.readyState >= 1) {

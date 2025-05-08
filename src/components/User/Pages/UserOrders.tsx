@@ -30,7 +30,7 @@ const UserOrders: React.FC<Props> = ({ }) => {
         case 'delivered':
             return "text-green-400"
         case 'cancelled':
-            return "ext-red-400"
+            return "text-red-400"
         default:
     }
   } 

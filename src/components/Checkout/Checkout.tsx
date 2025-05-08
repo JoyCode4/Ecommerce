@@ -49,8 +49,10 @@ const Checkout: React.FC<Props> = ({ }) => {
     },[])
 
     useEffect(()=>{
-        if(currentOrder){
+        if(currentOrder && currentOrder.paymentMethod === 'cash'){
             router.push(`/ordersuccess/${currentOrder.id}`);
+        }else if(currentOrder){
+            router.push(`/stripe-checkout`);
         }
     },[currentOrder])
 
