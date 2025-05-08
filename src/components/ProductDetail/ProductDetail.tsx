@@ -10,7 +10,7 @@ import { AppDispatch, RootState } from '../../lib/store';
 import Link from 'next/link';
 import { addToCartAsync } from '../Cart/CartSlice';
 import { selectLoggedInUser } from '../Auth/AuthSlice';
-import { discountPrice } from '../../models/contants';
+import { discountPrice } from '../../lib/contants';
 import { toast } from 'react-toastify';
 const colors= [
   { name: 'White', class: 'bg-white', selectedClass: 'ring-gray-400' },

@@ -6,7 +6,7 @@ import { AppDispatch } from "../../lib/store";
 import { fetchAllProductsAsync, selectAllProducts } from "./ProductListSlice";
 import { useEffect } from "react";
 import Link from "next/link";
-import { discountPrice } from "../../models/contants";
+import { discountPrice } from "../../lib/contants";
 const ProductList: React.FC = () => {
   const products: any[] = useSelector(selectAllProducts);
   let categories: any[] = [];

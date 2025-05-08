@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { withDbConnect } from "../../../lib/withDBConnection";
-import Product from "../../../models/product";
+import Product from "../../../models/Product";
 
 // GET: Fetch all products
 export const GET = withDbConnect(async (req:NextRequest) => {

@@ -1,4 +1,4 @@
-import { API_URL } from "../../models/contants"
+import { API_URL } from "../../lib/contants"
 export function fetchAllProductsAdmin(){
     return new Promise(async (resolve)=>{
         // const response = await fetch("api/productlist")

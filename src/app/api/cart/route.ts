@@ -1,5 +1,5 @@
 import { withDbConnect } from "../../../lib/withDBConnection";
-import Cart from "../../../models/cart";
+import Cart from "../../../models/Cart";
 import { NextRequest, NextResponse } from "next/server";
 
 // In-memory cart (replace with a database in production)
