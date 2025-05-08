@@ -1,6 +1,6 @@
-import User from '@/models/User';
+import User from '../../../../models/User';
 import jwt from "jsonwebtoken";
-import dbConnect from '@/lib/mongodb';
+import dbConnect from '../../../../lib/mongodb';
 import { NextResponse } from 'next/server';
 
 export async function GET(req:any) {

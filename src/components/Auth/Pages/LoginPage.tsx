@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { selectLoggedInUser, setUser } from "../AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "@/lib/store";
+import { AppDispatch } from "../../../lib/store";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 interface AuthProps {

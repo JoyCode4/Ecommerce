@@ -1,7 +1,7 @@
 'use client'
-import CartPage from "@/components/Cart/CartPage";
-import Protected from "@/components/Protected/Protected";
-import { usePageTitle } from "@/hooks/usePageTitle";
+import CartPage from "../../components/Cart/CartPage";
+import Protected from "../../components/Protected/Protected";
+import { usePageTitle } from "../../hooks/usePageTitle";
 import { useState } from "react";
 
 

@@ -6,11 +6,11 @@ import { Radio, RadioGroup } from '@headlessui/react'
 import { fetchProductByIdAsync, selectedProduct } from '../ProductList/ProductListSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'next/navigation';
-import { AppDispatch, RootState } from '@/lib/store';
+import { AppDispatch, RootState } from '../../lib/store';
 import Link from 'next/link';
 import { addToCartAsync } from '../Cart/CartSlice';
 import { selectLoggedInUser } from '../Auth/AuthSlice';
-import { discountPrice } from '@/models/contants';
+import { discountPrice } from '../../models/contants';
 import { toast } from 'react-toastify';
 const colors= [
   { name: 'White', class: 'bg-white', selectedClass: 'ring-gray-400' },

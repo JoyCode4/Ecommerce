@@ -1,6 +1,6 @@
 'use client'
 
-import { AppDispatch } from "@/lib/store";
+import { AppDispatch } from "../../../lib/store";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchLoggedInUserAsync, fetchLoggedInUserOrdersAsync, selectUserInfo, selectUserOrders } from "../UserSlice";

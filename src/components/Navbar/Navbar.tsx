@@ -4,7 +4,7 @@ import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuIt
 import { Bars3Icon, ShoppingCartIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
 import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch, RootState } from '@/lib/store'
+import { AppDispatch, RootState } from '../../lib/store'
 import { usePathname } from 'next/navigation'
 import { fetchCartItemsByUserIdAsync, selectCart } from '../Cart/CartSlice'
 import { selectLoggedInUser, setUser } from '../Auth/AuthSlice'

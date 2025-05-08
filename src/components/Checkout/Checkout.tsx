@@ -6,7 +6,7 @@ import { selectCart, selectCartTotalAmount, selectCartTotalItems } from '../Cart
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
-import { AppDispatch } from '@/lib/store';
+import { AppDispatch } from '../../lib/store';
 import { addToOrderAsync, selectCurrentOrder } from '../Order/OrderSlice';
 import { selectUserInfo, updateUserAsync } from '../User/UserSlice';
 import { toast } from 'react-toastify';

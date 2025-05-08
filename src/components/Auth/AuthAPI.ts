@@ -1,4 +1,4 @@
-import { API_URL } from "@/models/contants"
+import { API_URL } from "../../models/contants"
 import { DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_CREATE_ROOT_CONTAINERS } from "react-dom/client"
 export function fetchUsers(){
     return new Promise(async (resolve)=>{

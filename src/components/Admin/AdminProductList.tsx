@@ -1,7 +1,7 @@
 import Pagination from "../Pagination/Pagination";
 import { StarIcon } from "@heroicons/react/24/solid";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "@/lib/store";
+import { AppDispatch } from "../../lib/store";
 import { fetchAllProductsAdminAsync, selectAllProducts } from "../ProductList/ProductListSlice";
 import { useEffect } from "react";
 import Link from "next/link";

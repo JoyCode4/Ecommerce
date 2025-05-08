@@ -1,8 +1,8 @@
 'use client'
-import AdminProductList from "@/components/Admin/AdminProductList";
-import CategoryFilter from "@/components/CategoryFilter/CategoryFilter";
-import Protected from "@/components/Protected/Protected";
-import { usePageTitle } from "@/hooks/usePageTitle";
+import AdminProductList from "../../components/Admin/AdminProductList";
+import CategoryFilter from "../../components/CategoryFilter/CategoryFilter";
+import Protected from "../../components/Protected/Protected";
+import { usePageTitle } from "../../hooks/usePageTitle";
 
 export default function Home() {
   usePageTitle("E-Commerce");

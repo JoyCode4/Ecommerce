@@ -1,6 +1,6 @@
 'use client'
-import ForgotPassword from "@/components/Auth/Pages/ForgotPassword";
-import { usePageTitle } from "@/hooks/usePageTitle";
+import ForgotPassword from "../../components/Auth/Pages/ForgotPassword";
+import { usePageTitle } from "../../hooks/usePageTitle";
 
 
 

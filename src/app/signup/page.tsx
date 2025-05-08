@@ -1,7 +1,7 @@
 'use client'
-import SignupPage from "@/components/Auth/Pages/SignupPage";
-import Protected from "@/components/Protected/Protected";
-import { usePageTitle } from "@/hooks/usePageTitle";
+import SignupPage from "../../components/Auth/Pages/SignupPage";
+import Protected from "../../components/Protected/Protected";
+import { usePageTitle } from "../../hooks/usePageTitle";
 
 
 

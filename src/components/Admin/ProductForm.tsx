@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
 import { clearSelectedProduct, createProductAsync, fetchProductByIdAsync, selectedProduct as selectProduct, updateProductAsync } from '../ProductList/ProductListSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '@/lib/store';
+import { AppDispatch } from '../../lib/store';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';

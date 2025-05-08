@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
-import { AppDispatch } from "@/lib/store";
+import { AppDispatch } from "../../lib/store";
 import { useDispatch, useSelector } from "react-redux";
 import { resetCartAsync } from "../Cart/CartSlice";
 import { selectLoggedInUser } from "../Auth/AuthSlice";

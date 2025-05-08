@@ -1,8 +1,8 @@
 'use client'
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Providers } from "@/lib/Provider";
-import Navbar from "@/components/Navbar/Navbar";
+import { Providers } from "../lib/Provider";
+import Navbar from "../components/Navbar/Navbar";
 import { usePathname } from "next/navigation";
 import { Bounce, ToastContainer } from "react-toastify";
 

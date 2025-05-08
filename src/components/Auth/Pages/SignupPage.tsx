@@ -1,4 +1,4 @@
-import { AppDispatch } from "@/lib/store";
+import { AppDispatch } from "../../../lib/store";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";

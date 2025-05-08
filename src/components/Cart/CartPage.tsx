@@ -4,7 +4,7 @@ import Link from 'next/link';
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteCartAsync, selectCart, selectCartTotalAmount, selectCartTotalItems, updateCartAsync } from './CartSlice';
-import { AppDispatch } from '@/lib/store';
+import { AppDispatch } from '../../lib/store';
 import { toast } from 'react-toastify';
 import { selectLoggedInUser } from '../Auth/AuthSlice';
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';

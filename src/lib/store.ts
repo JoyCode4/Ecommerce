@@ -3,8 +3,8 @@ import productlistReducer from '../components/ProductList/ProductListSlice'
 import authReducer from '../components/Auth/AuthSlice'
 import cartReducer from '../components/Cart/CartSlice'
 import titleReducer from './TitleSlice'
-import orderReducer from '@/components/Order/OrderSlice'
-import userReducer from '@/components/User/UserSlice'
+import orderReducer from '../components/Order/OrderSlice'
+import userReducer from '../components/User/UserSlice'
 export const store = () => {
   return configureStore({
     reducer: {

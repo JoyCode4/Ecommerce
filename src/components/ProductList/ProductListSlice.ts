@@ -2,7 +2,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { fetchProductById, fetchAllProducts, createProduct, updateProduct, fetchAllProductsAdmin } from './ProductListAPI';
-import { RootState } from '@/lib/store';
+import { RootState } from '../../lib/store';
 
 const initialState:any= {
   products:[],

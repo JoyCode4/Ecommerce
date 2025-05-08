@@ -1,4 +1,4 @@
-import { API_URL } from "@/models/contants"
+import { API_URL } from "../../models/contants"
 export function addOrder(item:any){
     return new Promise(async (resolve)=>{
         const response = await fetch(`${API_URL}/api/orders`,{

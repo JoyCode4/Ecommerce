@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import { AppDispatch } from '@/lib/store';
+import { AppDispatch } from '../../../lib/store';
 import { selectUserInfo, updateUserAsync } from '../UserSlice';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { toast } from 'react-toastify';

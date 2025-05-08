@@ -1,7 +1,7 @@
 'use client'
-import ProductDetail from "@/components/ProductDetail/ProductDetail";
-import Protected from "@/components/Protected/Protected";
-import { usePageTitle } from "@/hooks/usePageTitle";
+import ProductDetail from "../../../components/ProductDetail/ProductDetail";
+import Protected from "../../../components/Protected/Protected";
+import { usePageTitle } from "../../../hooks/usePageTitle";
 
 
 export default function Login() {

@@ -1,7 +1,7 @@
 'use client'
 
-import { AppDispatch } from "@/lib/store";
-import { setPageTitle } from "@/lib/TitleSlice";
+import { AppDispatch } from "../lib/store";
+import { setPageTitle } from "../lib/TitleSlice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 

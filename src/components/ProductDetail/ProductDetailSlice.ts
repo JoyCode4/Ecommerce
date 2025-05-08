@@ -1,15 +1,14 @@
-import { ProductListStruct } from '../../models/ProductList';
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { useSelector } from 'react-redux';
 
-const initialState:ProductListStruct[] = [];
+const initialState:any[] = [];
 
 const productSlice = createSlice({
   name: 'product',
   initialState,
   reducers: {
-    addProduct(state, action: PayloadAction<ProductListStruct>) {
+    addProduct(state, action: PayloadAction<any>) {
       state.push(action.payload);
     },
   },
