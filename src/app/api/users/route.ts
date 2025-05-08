@@ -1,5 +1,5 @@
 import { withDbConnect } from "../../../lib/withDBConnection";
-import User from "../../../models/User";
+import User from "../../../models/user";
 import { NextRequest, NextResponse } from "next/server";
 
 // In-memory users list (Replace with DB in production)

@@ -1,7 +1,7 @@
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { compare } from 'bcryptjs';
-import User from '../models/User'; // Your mongoose model
+import User from '../models/user'; // Your mongoose model
 
 passport.use(
   new LocalStrategy(

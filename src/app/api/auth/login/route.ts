@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import User from '../../../../models/User';
+import User from '../../../../models/user';
 import { compare } from 'bcryptjs';
 import dbConnect from '../../../../lib/mongodb';
 import { cookies } from 'next/headers';

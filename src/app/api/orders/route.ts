@@ -1,5 +1,5 @@
 import { withDbConnect } from "../../../lib/withDBConnection";
-import Order from "../../../models/Order";
+import Order from "../../../models/order";
 import { NextRequest, NextResponse } from "next/server";
 
 // In-memory orders (replace with a database in production)
